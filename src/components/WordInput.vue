@@ -24,21 +24,21 @@ that start with ....</h1>
         {{character}}</span>
         </transition>
 </div>
-
-      
-
         <b-form
         class="inputForm"
         @submit="onSubmit">
-            <div>
+        <div>
         <b-form-input 
         autofocus
         v-model="word" placeholder="Drop a word here."
         class="word-input">
-        
         </b-form-input>
-        
-    </div>
+        <span 
+        v-show="this.showFeedback.startsWith"
+        class="warning-text ">
+            It's not start with {{character}}
+        </span>
+        </div>
     
     </b-form>
     <div
@@ -47,11 +47,11 @@ that start with ....</h1>
     
     tag="div"
     leave-active-class="animated bounceOut"
-    enter-active-class="animated jello"
+    enter-active-class="animated fadeIn"
     >
     <div  
     class="list-item"
-    v-for="(item, index) in threeWords" v-bind:key="index">
+    v-for="(item, index) in threeWords" :key="index">
          > {{item}}
     </div>
     </transition-group>
@@ -71,7 +71,8 @@ export default {
             threeWords: [], 
             character: this.getRandomCharacter(),
             show: false,
-            type: {}
+            type: {}, 
+            showFeedback: {startsWith: false, notFound:false}
         }
     }, 
     mounted(){
@@ -94,12 +95,16 @@ export default {
                 this.show = false
                 
             }
+        }, 
+        word: function(){
+            if (this.word === ''){ this.showFeedback.startsWith = false}
         }
     },
     
     methods: {
         onSubmit(event){
             event.preventDefault()
+            if (!this.validateWord(this.word)) { return }
             this.threeWords.push(this.word)
             this.word = ''
         },
@@ -112,6 +117,16 @@ export default {
         },
         getShow(){
             this.show = true
+        },
+        validateWord(word){
+            if (!word.toLowerCase().startsWith(this.character.toLowerCase())) {
+                this.showFeedback.startsWith = true 
+                return false
+            }
+
+            // 사전 api 호출하여 실제 단어인지 체크하는 검증 추가 
+
+            return true
         }
     },
 
@@ -151,6 +166,13 @@ p {
     font-size: 150%;
     margin-bottom: 10px;
     letter-spacing: .2rem;
+    margin-top:1%;
+}
+.warning-text{
+    letter-spacing: .2rem;
+    font-size: 80%;
+    position: relative;
+    right: 0px;
 }
 .list-item{
     display: block;
@@ -161,8 +183,8 @@ p {
     height: 230px;
 }
 .inputForm{
-    position: static;
-    top:1%;
+    position: relative;
+    top:10px;
 }
 
 

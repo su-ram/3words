@@ -4,17 +4,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
 <div id="app">
+  
     <hello-world/>
-    Round # 
+    <button class= "count-round" ref="roundBtn"> Round </button>
     <transition
-    enter-active-class="animated flipInX"
+    enter-active-class="animated bounce"
     >
       <span
+      class="round-no"
       :key="round">
-        {{round}}
+        <strong>{{round}}</strong>
         </span>
       </transition>
+      
     <WordInput @nextRound="goNextRound"/>
+    <b-button-group
+    class="characters"
+    size="sm">
+      <b-button>Button 1</b-button>
+      <b-button>Button 2</b-button>
+      <b-button>Button 3</b-button>
+    </b-button-group>
   </div>
 </section>
   
@@ -25,6 +35,7 @@
 import WordInput from './components/WordInput.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import { loadScript } from 'vue-plugin-load-script'
+import party from "party-js"
 
 export default {
   name: 'App',
@@ -43,7 +54,11 @@ mounted() {
 },
 methods: {
   goNextRound(){
+    party.confetti(this.$refs.roundBtn)
     this.round += 1
+  }, 
+  test(){
+    party.confetti()
   }
 }
 }
@@ -61,15 +76,29 @@ methods: {
 html {
   width: 100%;
   height: 100%;
-  
 }
 body {
   font-family: 'Carter One', cursive;
 font-family: 'Open Sans', sans-serif;
   background: linear-gradient(to right, #202c4e 0%, #6b2892 100%);
   padding-left: 10%;
-  padding-top: 3%;
-  width: 100%;
-  
+  padding-top: 3%;  
+  height: 100%;
+}
+
+.count-round{
+  background:transparent;
+  border: unset;
+  color: white;
+}
+
+.round-no{
+  display:inline-block;
+}
+
+.characters.btn-group {
+  position: fixed;
+  bottom: 0px;
+  padding-left: 0px;
 }
 </style>
