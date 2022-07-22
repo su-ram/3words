@@ -5,26 +5,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
 <div id="app">
   
-    <hello-world/>
-    <button class= "count-round" ref="roundBtn"> Round </button>
-    <transition
-    enter-active-class="animated bounce"
-    >
-      <span
-      class="round-no"
-      :key="round">
-        <strong>{{round}}</strong>
-        </span>
-      </transition>
+  <div>
+  <b-tabs content-class="mt-3" small align="right">
+    <b-tab title="Game" active>
+      <WordInput/>
+      </b-tab>
+    <b-tab title="WordBook">
+
+      <WordBook />
+    </b-tab>
+    <b-tab title="Ranking" ><p>I'm a disabled tab!</p></b-tab>
+  </b-tabs>
+</div>
+    
       
-    <WordInput @nextRound="goNextRound"/>
-    <b-button-group
-    class="characters"
-    size="sm">
-      <b-button>Button 1</b-button>
-      <b-button>Button 2</b-button>
-      <b-button>Button 3</b-button>
-    </b-button-group>
+    
   </div>
 </section>
   
@@ -33,14 +28,16 @@
 <script>
 
 import WordInput from './components/WordInput.vue'
-import HelloWorld from './components/HelloWorld.vue'
+import WordBook from './components/WordBook.vue'
 import { loadScript } from 'vue-plugin-load-script'
 import party from "party-js"
 
 export default {
   name: 'App',
   components: {
-    WordInput, HelloWorld
+    WordInput,
+    WordBook,
+    
 },
 data(){
   return {
@@ -64,13 +61,12 @@ methods: {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: whitesmoke;
-  margin-top: 60px;
   
 }
 html {
@@ -81,8 +77,6 @@ body {
   font-family: 'Carter One', cursive;
 font-family: 'Open Sans', sans-serif;
   background: linear-gradient(to right, #202c4e 0%, #6b2892 100%);
-  padding-left: 10%;
-  padding-top: 3%;  
   height: 100%;
 }
 
@@ -100,5 +94,22 @@ font-family: 'Open Sans', sans-serif;
   position: fixed;
   bottom: 0px;
   padding-left: 0px;
+}
+
+
+
+#app {
+  .nav-tabs{
+border-bottom: none;
+    .nav-link{
+    color: whitesmoke;
+    background: transparent;
+    border: none;
+      .active{
+        text-decoration: underline;
+      }
+    
+    }
+  }
 }
 </style>
