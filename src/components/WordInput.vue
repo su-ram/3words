@@ -1,20 +1,37 @@
 <template>
+<section>
     <div
     class="text">
         <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 
 <div
 class="terminal">
-<h1
-id="hello">
-Show me 3 words <br>
-that start with ....</h1>
-<transition 
-      v-on:after-enter="afterEnter"
+
+<b-container>
+    <button class= "count-round" ref="roundBtn">Round </button>
+    <transition
+    v-on:after-enter="afterEnter"
+    enter-active-class="animated bounce"
+    >
+      <span
+      class="round-no"
+      :key="round">
+        <strong>{{round}}</strong>
+        </span>
+      </transition>
+  <b-row align-v="start">
+    
+    <b-col>
+        <h1
+            id="hello">
+            Show me 3 words <br>
+            that start with ....</h1>
+</b-col>
+    <b-col>
+        <transition 
+      
       enter-active-class="animated rotateIn slower"
       leave-active-class="animated rotateOut"
-      :duration="2000"
-      
     >     
 <span
       class="start-character"
@@ -23,46 +40,58 @@ that start with ....</h1>
       >
         {{character}}</span>
         </transition>
-</div>
-        <b-form
+    </b-col>
+   
+  </b-row>
+   <b-form
         class="inputForm"
         @submit="onSubmit">
-        <div>
+        
         <b-form-input 
         autofocus
         v-model="word" placeholder="Drop a word here."
         class="word-input">
         </b-form-input>
         <span 
-        v-show="this.showFeedback.startsWith"
-        class="warning-text ">
-            It's not start with {{character}}
+        v-if="this.showFeedback.startsWith"
+        class="warning-text">
+        <em>Please starts with [ {{character}} ]. Try again.</em>
         </span>
-        </div>
+        
     
     </b-form>
-    <div
+
+     <div
     class="three-words">
     <transition-group 
     
     tag="div"
-    leave-active-class="animated bounceOut"
+    leave-active-class="animated bounceOut faster"
     enter-active-class="animated fadeIn"
     >
     <div  
     class="list-item"
     v-for="(item, index) in threeWords" :key="index">
-         > {{item}}
+         _ {{item}}
     </div>
     </transition-group>
 
     </div>
+
+</b-container>
+
+
+</div>
+       
+   
     
     </div>
+    </section>
 </template>
 <script>
 import TypeIt from 'typeit'
-
+import party from "party-js"
+import { mapMutations } from 'vuex'
 export default {
     name: 'WordInput',
     data() {
@@ -72,12 +101,13 @@ export default {
             character: this.getRandomCharacter(),
             show: false,
             type: {}, 
-            showFeedback: {startsWith: false, notFound:false}
+            showFeedback: {startsWith: false, notFound:false}, 
+            round: 1
         }
     }, 
     mounted(){
         this.type = new TypeIt('#hello',{
-            speed:50,
+            speed:28,
             html: true,
             afterComplete: (instance) => {
                 instance.destroy()
@@ -90,9 +120,10 @@ export default {
         threeWords: function(){
             if (this.threeWords.length >= 3){
                 this.character = this.getRandomCharacter()
-                this.$emit('nextRound')
+                this.goNextRound()
                 this.type.reset().go()
                 this.show = false
+                this.addTheseWords(this.threeWords)
                 
             }
         }, 
@@ -102,6 +133,10 @@ export default {
     },
     
     methods: {
+        ...mapMutations({
+            'addTheseWords' : 'addWords'
+
+        }),
         onSubmit(event){
             event.preventDefault()
             if (!this.validateWord(this.word)) { return }
@@ -127,16 +162,26 @@ export default {
             // 사전 api 호출하여 실제 단어인지 체크하는 검증 추가 
 
             return true
-        }
+        },
+        goNextRound(){
+    party.confetti(this.$refs.roundBtn)
+    this.round += 1
+  }
     },
 
 }
 </script>
 <style scoped>
-
+section {
+    padding-top: 7%;
+}
 form {
     width:50%;
     margin-top: 2%;
+}
+#hello {
+      letter-spacing: .1rem;
+
 }
 .form-control{
     color: whitesmoke;
@@ -149,13 +194,12 @@ form {
     border:none;
 }
 p {
-    color:white;
+    color:whitesmoke;
 }
 .start-character{
-    font-size: 70px;
+    padding-left: 10%;
+    font-size: 100px;
     font-weight: bold;
-    padding-left: 2%;
-    padding-right: 2%;
     display: inline-block;    
     font-family: Righteous; 
     color:greenyellow;
@@ -166,13 +210,17 @@ p {
     font-size: 150%;
     margin-bottom: 10px;
     letter-spacing: .2rem;
-    margin-top:1%;
+
 }
 .warning-text{
-    letter-spacing: .2rem;
-    font-size: 80%;
-    position: relative;
-    right: 0px;
+    letter-spacing: .1rem;
+    font-size: 70%;
+    display:inline-block;
+    color: orange;
+    opacity: 70%;
+    left: 5px;
+    top: 3px;
+
 }
 .list-item{
     display: block;
@@ -184,7 +232,21 @@ p {
 }
 .inputForm{
     position: relative;
-    top:10px;
+    margin-top: 5%;
+    min-height: 77px;
+}
+.count-round{
+  background:transparent;
+  border: unset;
+  color: whitesmoke;
+  letter-spacing: .1rem;
+}
+.col {
+    max-width: fit-content !important;
+}
+
+.row {
+    min-height: 150px;
 }
 
 
