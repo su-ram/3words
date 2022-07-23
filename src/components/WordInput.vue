@@ -55,7 +55,12 @@ class="terminal">
         <span 
         v-if="this.showFeedback.startsWith"
         class="warning-text">
-        <em>Please starts with [ {{character}} ]. Try again.</em>
+        <em>Please starts with [ {{character}} ], Think well. </em>
+        </span>
+        <span 
+        v-if="this.showFeedback.notFound"
+        class="warning-text">
+        <em>There's no such a word like [ {{this.word}} ], Try again. </em>
         </span>
         
     
@@ -92,6 +97,7 @@ class="terminal">
 import TypeIt from 'typeit'
 import party from "party-js"
 import { mapMutations } from 'vuex'
+import WordsApi from '../api/words.js'
 export default {
     name: 'WordInput',
     data() {
@@ -124,24 +130,33 @@ export default {
                 this.type.reset().go()
                 this.show = false
                 this.addTheseWords(this.threeWords)
+                this.$store.commit('addWordsArr', this.threeWords)
+                
                 
             }
         }, 
         word: function(){
-            if (this.word === ''){ this.showFeedback.startsWith = false}
+            if (this.word === ''){ 
+                this.showFeedback.startsWith = false
+                this.showFeedback.notFound = false
+                }
         }
     },
     
     methods: {
         ...mapMutations({
             'addTheseWords' : 'addWords'
-
         }),
         onSubmit(event){
             event.preventDefault()
-            if (!this.validateWord(this.word)) { return }
-            this.threeWords.push(this.word)
-            this.word = ''
+            this.validateWord(this.word).then((isvalid) => {
+                if (!isvalid) { return }
+                else {
+                    this.threeWords.push(this.word)
+                    this.word = ''  
+                }
+            })
+            
         },
         afterEnter(){
             //this.threeWords = []
@@ -153,20 +168,24 @@ export default {
         getShow(){
             this.show = true
         },
-        validateWord(word){
+        async validateWord(word){
+
             if (!word.toLowerCase().startsWith(this.character.toLowerCase())) {
                 this.showFeedback.startsWith = true 
                 return false
             }
-
-            // 사전 api 호출하여 실제 단어인지 체크하는 검증 추가 
+        
+            if (await WordsApi.getWordInfo(word) === false) {
+                this.showFeedback.notFound = true 
+                return false
+            }
 
             return true
         },
         goNextRound(){
-    party.confetti(this.$refs.roundBtn)
-    this.round += 1
-  }
+            party.confetti(this.$refs.roundBtn)
+            this.round += 1
+        }
     },
 
 }
