@@ -7,12 +7,8 @@ const WordsApi = {
             'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
           }
     },
-    getWordInfo: async function(word) {
-        try {
-            return await axios.get('https://wordsapiv1.p.rapidapi.com/words/' + word, this.options)
-        }catch(error){
-            return false
-        }
+    getWordInfo: function(word) {
+        return axios.get('https://wordsapiv1.p.rapidapi.com/words/' + word, this.options)        
     }
 }
 

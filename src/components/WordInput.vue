@@ -149,14 +149,14 @@ export default {
         }),
         onSubmit(event){
             event.preventDefault()
-            this.validateWord(this.word).then((isvalid) => {
-                if (!isvalid) { return }
-                else {
+            this.validateWord(this.word).then((res)=>{
+                if(res) {
                     this.threeWords.push(this.word)
-                    this.word = ''  
+                    this.word = ''
                 }
             })
             
+                     
         },
         afterEnter(){
             //this.threeWords = []
@@ -169,18 +169,17 @@ export default {
             this.show = true
         },
         async validateWord(word){
-
             if (!word.toLowerCase().startsWith(this.character.toLowerCase())) {
                 this.showFeedback.startsWith = true 
                 return false
             }
-        
-            if (await WordsApi.getWordInfo(word) === false) {
+            try {
+                await WordsApi.getWordInfo(word)
+                return true
+            } catch (error) {
                 this.showFeedback.notFound = true 
                 return false
             }
-
-            return true
         },
         goNextRound(){
             party.confetti(this.$refs.roundBtn)
@@ -236,7 +235,7 @@ p {
     font-size: 70%;
     display:inline-block;
     color: orange;
-    opacity: 70%;
+    opacity: 90%;
     left: 5px;
     top: 3px;
 
