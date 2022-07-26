@@ -13,20 +13,21 @@
                     
                 </b-row>
                 total words : 123<br/>
-                total points : 308
+                total points : 308<br/>
+                total rounds : 27
                 
             </b-col>
             
             <b-col cols="9">
                 All the {{this.currentCharacter}} words....
                 
-            <div v-for="(word) in words[this.currentCharacter]" :key="word"> 
+            <div v-for="(word, wordIndex) in this.wordList" :key="wordIndex"> 
                 <b-card-group deck>
-                    <b-card :title="word" >
-                    <b-card-text>
-                        - definition <br/>
-                        1. This is a wider card with supporting text below as a natural lead-in to additional content.
-                        This content is a little bit longer.
+                    <b-card :title="word.word" >
+                    <b-card-text v-for="(definition ,index) in word.results.length > 3 ? word.results.slice(0,3) : word.results " :key="index">
+                        <p>
+                            {{index+1}}. {{definition.definition}}
+                        </p>
                     </b-card-text>
                     <!-- <template #footer>
                         <small class="text-muted">Last updated 3 mins ago</small>
@@ -46,12 +47,14 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import WordsApi from '../api/words.js'
 
 export default {
     name: 'WordBook',
     data() {
         return{
-            currentCharacter: 'A'
+            currentCharacter: 'A', 
+            wordList: []
         }
     },
     computed: {
@@ -66,6 +69,13 @@ export default {
         changeKey(event, k){
             event.preventDefault();
             this.currentCharacter = k 
+            this.wordList = []
+            this.words[this.currentCharacter].forEach((word) => {
+                WordsApi.getWordInfo(word).then((res)=>{
+                    this.wordList.push(res.data)
+                })
+
+            })
             
         }
     }
