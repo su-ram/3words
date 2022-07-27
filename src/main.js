@@ -4,7 +4,14 @@ import {BootstrapVue} from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { DraggablePlugin } from '@braks/revue-draggable';
 
+// Use as Plugin
+Vue.use(DraggablePlugin)
+
+// // or
+// Vue.directive('draggable', DraggableDirective)
+// Vue.component('Draggable', Draggable)
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.use(BootstrapVue)
