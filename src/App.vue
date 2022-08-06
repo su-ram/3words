@@ -66,7 +66,6 @@ methods: {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: whitesmoke;
   
 }
 html {
@@ -74,16 +73,14 @@ html {
   height: 100%;
 }
 body {
-  font-family: 'Carter One', cursive;
-font-family: 'Open Sans', sans-serif;
-  background: linear-gradient(to right, #202c4e 0%, #6b2892 100%);
+  font-family: 'Open Sans', sans-serif !important ;
   height: 100%;
+  background-color: #dfdbd6 !important;
 }
 
 .count-round{
   background:transparent;
   border: unset;
-  color: white;
 }
 
 .round-no{
@@ -102,7 +99,7 @@ font-family: 'Open Sans', sans-serif;
   .nav-tabs{
 border-bottom: none;
     .nav-link{
-    color: whitesmoke;
+    color: black;
     background: transparent;
     border: none;
       .active{

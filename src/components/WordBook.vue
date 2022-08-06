@@ -3,31 +3,33 @@
     <b-container fluid>
         <b-row>
             
-            <b-col cols="2">
-                
-                <b-row cols="4" class="keyList">
-                    <div v-for="(key) in keys" :key="key">
-                    <span><b-link @click ="changeKey($event, key)" class="wordKey"><strong><em>{{key}}</em></strong></b-link></span>
+            <b-col cols="1">
+
+                    <div class="wordKey">
+<b-form-group v-slot="{ ariaDescribedby }">
+<b-form-radio-group
+        id="btn-radios-3"
+        v-model="currentCharacter"
+        :options="keys"
+        :aria-describedby="ariaDescribedby"
+        buttons
+        size="sm"
+      ></b-form-radio-group>
+    </b-form-group>
                     </div>
-                    
-                </b-row>
-                total words : 123<br/>
-                total points : 308<br/>
-                total rounds : 27                
+                                 
             </b-col>
             
-            <b-col cols="9">
-                All the {{this.currentCharacter}} words....
-                
-            <div v-for="(word, wordIndex) in this.wordList" :key="wordIndex"> 
-                <b-card-group deck>
+            <b-col cols="10">
+                All the <span class="start-character">{{this.currentCharacter}}</span>  words....
+            <div > 
+                <b-card-group columns >
                 <Draggable>
-                
-                    <b-card :title="word.word" >
+                    <b-card v-for="(word, wordIndex) in this.wordList" :key="wordIndex" :title="word.word" >
                     <b-card-text v-for="(definition ,index) in word.results.length > 3 ? word.results.slice(0,3) : word.results " :key="index">
-                        <p>
+                        <span>
                             {{index+1}}. {{definition.definition}}, <em>{{definition.partOfSpeech}}</em>
-                        </p>
+                        </span>
                     </b-card-text>
                     </b-card>
 </Draggable>
@@ -51,7 +53,20 @@ export default {
     data() {
         return{
             currentCharacter: 'A', 
-            wordList: []
+            wordList: [], 
+            test: 'a'
+        }
+    },
+    watch: {
+        currentCharacter() {
+this.wordList = []
+            this.words[this.currentCharacter].forEach((word) => {
+                WordsApi.getWordInfo(word).then((res)=>{
+                    this.wordList.push(res.data)
+                    //this.wordList = [ ...this.wordList, ...this.wordList, ...this.wordList]
+                })
+
+            })
         }
     },
     computed: {
@@ -65,14 +80,9 @@ export default {
     methods: {
         changeKey(event, k){
             event.preventDefault();
+            console.log('change key')
             this.currentCharacter = k 
-            this.wordList = []
-            this.words[this.currentCharacter].forEach((word) => {
-                WordsApi.getWordInfo(word).then((res)=>{
-                    this.wordList.push(res.data)
-                })
-
-            })
+            
             
         }
     }
@@ -90,7 +100,7 @@ export default {
     
 }
 .keyList{
-    background: rgba(0,0,0,.2);
+    
     text-align: center;
     padding: 0.75rem 1.25rem;
     border-radius: 0.7rem;
@@ -99,23 +109,37 @@ export default {
     left: 0;
 
 }
+.wordKey {
+    background: grey;
+    
+}
 .card{
     background: rgba(0,0,0,.08);
     margin: 0.75rem 3rem;
     
     .card-title{
-        
+        font-size: 0.8rem;
         letter-spacing: .1rem;
     }
     .card-text{
-        font-size: 16px;
+        font-size: 0.6rem;
     }
 }
 a{
-    color: greenyellow !important;
+    color: #e18513 !important;
     opacity: 80% ;
 }
 .col{
     padding-left: 5%;
+}
+.btn-group, .btn-group-vertical {
+    flex-wrap:wrap !important;
+}
+.start-character{
+    font-family: 'Carter One', sans-serif !important ;
+    font-size: 200%;
+    font-family: Righteous; 
+    color: #e18513;
+    text-shadow: 4px 2px 2px rgb(52, 64, 43);   
 }
 </style>

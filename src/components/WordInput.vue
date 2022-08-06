@@ -202,26 +202,29 @@ form {
 
 }
 .form-control{
-    color: whitesmoke;
+    color: #252222;
     background: transparent;
     letter-spacing: .1rem;
+    border:1px solid rgb(206, 204, 204)
 }
 .form-control:focus{
     background: transparent;
-    color: whitesmoke;
-    border:none;
+    color: #252222;
+    border:1px solid rgb(155, 153, 153);
+    box-shadow: none;
 }
 p {
     color:whitesmoke;
 }
 .start-character{
+    font-family: 'Carter One', sans-serif !important ;
     padding-left: 10%;
     font-size: 100px;
-    font-weight: bold;
+    
     display: inline-block;    
     font-family: Righteous; 
-    color:greenyellow;
-    text-shadow: 4px 2px 2px black;   
+    color: #e18513;
+    text-shadow: 4px 2px 2px rgb(52, 64, 43);   
 }
 .three-words {
     padding:3%;
@@ -234,7 +237,7 @@ p {
     letter-spacing: .1rem;
     font-size: 70%;
     display:inline-block;
-    color: orange;
+    color: rgb(62, 62, 62);
     opacity: 90%;
     left: 5px;
     top: 3px;
@@ -256,7 +259,7 @@ p {
 .count-round{
   background:transparent;
   border: unset;
-  color: whitesmoke;
+  color: rgb(62, 62, 62);
   letter-spacing: .1rem;
 }
 .col {
