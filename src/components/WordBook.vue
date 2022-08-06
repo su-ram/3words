@@ -1,121 +1,158 @@
 <template>
-    <section>
+  <section>
     <b-container fluid>
-        <b-row>
-            
-            <b-col cols="2">
-                
-                <b-row cols="4" class="keyList">
-                    <div v-for="(key) in keys" :key="key">
-                    <span><b-link @click ="changeKey($event, key)" class="wordKey"><strong><em>{{key}}</em></strong></b-link></span>
-                    </div>
-                    
-                </b-row>
-                total words : 123<br/>
-                total points : 308<br/>
-                total rounds : 27                
-            </b-col>
-            
-            <b-col cols="9">
-                All the {{this.currentCharacter}} words....
-                
-            <div v-for="(word, wordIndex) in this.wordList" :key="wordIndex"> 
-                <b-card-group deck>
-                <Draggable>
-                
-                    <b-card :title="word.word" >
-                    <b-card-text v-for="(definition ,index) in word.results.length > 3 ? word.results.slice(0,3) : word.results " :key="index">
-                        <p>
-                            {{index+1}}. {{definition.definition}}, <em>{{definition.partOfSpeech}}</em>
-                        </p>
-                    </b-card-text>
-                    </b-card>
-</Draggable>
-                </b-card-group>
-</div>
+      <b-row>
+        <b-col cols="1">
+          <div class="wordKey">
+            <b-form-group v-slot="{ ariaDescribedby }">
+              <b-form-radio-group
+                id="btn-radios-3"
+                v-model="currentCharacter"
+                :options="keys"
+                :aria-describedby="ariaDescribedby"
+                buttons
+                size="sm"
+              ></b-form-radio-group>
+            </b-form-group>
+          </div>
+        </b-col>
 
-
-            </b-col>
-        </b-row>
-        
-      </b-container>
-
-    </section>
+        <b-col cols="10">
+          <div class="word-search">
+            All the
+            <span class="start-character">{{ this.currentCharacter }}</span>
+            words....
+            <b-form-input
+              id="input-small"
+              size="sm"
+              placeholder="Enter your name"
+              class="word-search"
+            ></b-form-input>
+          </div>
+          <div>
+            <b-card-group columns>
+              <Draggable>
+                <b-card
+                  v-for="(word, wordIndex) in this.wordList"
+                  :key="wordIndex"
+                  :title="word.word"
+                >
+                  <b-card-text
+                    v-for="(definition, index) in word.results.length > 3
+                      ? word.results.slice(0, 3)
+                      : word.results"
+                    :key="index"
+                  >
+                    <span>
+                      {{ index + 1 }}. {{ definition.definition }},
+                      <em>{{ definition.partOfSpeech }}</em>
+                    </span>
+                  </b-card-text>
+                </b-card>
+              </Draggable>
+            </b-card-group>
+          </div>
+        </b-col>
+      </b-row>
+    </b-container>
+  </section>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import WordsApi from '../api/words.js'
+import { mapGetters } from "vuex";
+import WordsApi from "../api/words.js";
 
 export default {
-    name: 'WordBook',
-    data() {
-        return{
-            currentCharacter: 'A', 
-            wordList: []
-        }
+  name: "WordBook",
+  data() {
+    return {
+      currentCharacter: "A",
+      wordList: [],
+      test: "a",
+    };
+  },
+  watch: {
+    currentCharacter() {
+      this.getWordsInfo();
     },
-    computed: {
-        ...mapGetters({
-            'words' : 'words', 
-            'keys' : 'keys', 
-            'wordsArr' : 'wordsArr'
-        })
-        
-    }, 
-    methods: {
-        changeKey(event, k){
-            event.preventDefault();
-            this.currentCharacter = k 
-            this.wordList = []
-            this.words[this.currentCharacter].forEach((word) => {
-                WordsApi.getWordInfo(word).then((res)=>{
-                    this.wordList.push(res.data)
-                })
-
-            })
-            
-        }
-    }
-}
+  },
+  computed: {
+    ...mapGetters({
+      words: "words",
+      keys: "keys",
+      wordsArr: "wordsArr",
+    }),
+  },
+  mounted() {
+    this.getWordsInfo();
+  },
+  methods: {
+    getWordsInfo() {
+      this.wordList = [];
+      this.words[this.currentCharacter].forEach((word) => {
+        WordsApi.getWordInfo(word).then((res) => {
+          this.wordList.push(res.data);
+          //this.wordList = [ ...this.wordList, ...this.wordList, ...this.wordList]
+        });
+      });
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
-
 .section {
-    
 }
-.container{
-    margin: 0px;
-    padding: 0px;
-    background-color: whitesmoke !important;
-    
+.container {
+  margin: 0px;
+  padding: 0px;
+  background-color: whitesmoke !important;
 }
-.keyList{
-    background: rgba(0,0,0,.2);
-    text-align: center;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.7rem;
-    position: sticky;
-    top: 0;
-    left: 0;
+.keyList {
+  text-align: center;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.7rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+.wordKey {
+  background: grey;
+}
+.card {
+  background: rgba(0, 0, 0, 0.08);
+  margin: 0.75rem 3rem;
 
+  .card-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+  }
+  .card-text {
+    font-size: 0.6rem;
+  }
 }
-.card{
-    background: rgba(0,0,0,.08);
-    margin: 0.75rem 3rem;
-    
-    .card-title{
-        
-        letter-spacing: .1rem;
-    }
-    .card-text{
-        font-size: 16px;
-    }
+a {
+  color: #e18513 !important;
+  opacity: 80%;
 }
-a{
-    color: greenyellow !important;
-    opacity: 80% ;
+.col {
+  padding-left: 5%;
 }
-.col{
-    padding-left: 5%;
+.btn-group,
+.btn-group-vertical {
+  flex-wrap: wrap !important;
+}
+.start-character {
+  font-family: "Carter One", sans-serif !important ;
+  font-size: 200%;
+  color: #e18513;
+  text-shadow: 4px 2px 2px rgb(52, 64, 43);
+}
+div .word-search {
+  position: sticky;
+  top: 0;
+}
+.word-search .form-control {
+  display: initial !important;
+  width: 20%;
+  right: 0;
 }
 </style>
