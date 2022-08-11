@@ -17,19 +17,13 @@
           </div>
         </b-col>
 
-        <b-col cols="10">
-          <div class="word-search">
-            All the
-            <span class="start-character">{{ this.currentCharacter }}</span>
-            words....
-            <b-form-input
-              id="input-small"
-              size="sm"
-              placeholder="Enter your name"
-              class="word-search"
-            ></b-form-input>
-          </div>
-          <div>
+        <b-col cols="9">
+          <div class="mywords">
+            <div class="word-search">
+              All the
+              <span class="start-character">{{ this.currentCharacter }}</span>
+              words....
+            </div>
             <b-card-group columns>
               <Draggable>
                 <b-card
@@ -37,22 +31,35 @@
                   :key="wordIndex"
                   :title="word.word"
                 >
-                  <b-card-text
-                    v-for="(definition, index) in word.results.length > 3
-                      ? word.results.slice(0, 3)
-                      : word.results"
-                    :key="index"
-                  >
-                    <span>
-                      {{ index + 1 }}. {{ definition.definition }},
-                      <em>{{ definition.partOfSpeech }}</em>
-                    </span>
+                  <b-card-text>
+                    <div
+                      v-for="(definition, index) in word.results.length > 3
+                        ? word.results.slice(0, 3)
+                        : word.results"
+                      :key="index"
+                    >
+                      <span>
+                        {{ index + 1 }}. {{ definition.definition }},
+                        <em
+                          ><small>({{ definition.partOfSpeech }})</small></em
+                        >
+                      </span>
+                    </div>
                   </b-card-text>
                 </b-card>
               </Draggable>
             </b-card-group>
           </div>
         </b-col>
+
+        <b-col cols="2">
+          <b-form-input
+            id="input-small"
+            size="sm"
+            placeholder="search the word"
+            class="word-search"
+          ></b-form-input
+        ></b-col>
       </b-row>
     </b-container>
   </section>
@@ -91,9 +98,9 @@ export default {
       this.words[this.currentCharacter].forEach((word) => {
         WordsApi.getWordInfo(word).then((res) => {
           this.wordList.push(res.data);
-          //this.wordList = [ ...this.wordList, ...this.wordList, ...this.wordList]
         });
       });
+      this.wordList = [...this.wordList, ...this.wordList, ...this.wordList];
     },
   },
 };
@@ -116,17 +123,22 @@ export default {
 }
 .wordKey {
   background: grey;
+  margin: 1rem;
 }
 .card {
   background: rgba(0, 0, 0, 0.08);
   margin: 0.75rem 3rem;
-
+  height: 180px;
+  overflow-y: scroll;
+  .card-body {
+    max-height: inherit;
+  }
   .card-title {
     font-size: 0.8rem;
     letter-spacing: 0.1rem;
   }
   .card-text {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
   }
 }
 a {
@@ -152,7 +164,10 @@ div .word-search {
 }
 .word-search .form-control {
   display: initial !important;
-  width: 20%;
-  right: 0;
+  width: 50%;
+  align-self: center;
 }
+// .mywords {
+//   padding: 1rem 1rem;
+// }
 </style>
