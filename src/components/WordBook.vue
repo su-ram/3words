@@ -1,23 +1,6 @@
 <template>
   <section>
     <b-container fluid>
-<<<<<<< HEAD
-      <b-row>
-        <b-col cols="1">
-          <div class="wordKey">
-            <b-form-group v-slot="{ ariaDescribedby }">
-              <b-form-radio-group
-                id="btn-radios-3"
-                v-model="currentCharacter"
-                :options="keys"
-                :aria-describedby="ariaDescribedby"
-                buttons
-                size="sm"
-              ></b-form-radio-group>
-            </b-form-group>
-          </div>
-        </b-col>
-=======
         <b-row>
             
             <b-col cols="1">
@@ -53,7 +36,6 @@
                 </b-card-group>
 </div>
 
->>>>>>> f28db03a46a9a8d04389eee0b09a04fbe9a00c18
 
         <b-col cols="9">
           <div class="mywords">
