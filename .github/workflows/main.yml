@@ -24,6 +24,10 @@ jobs:
         uses: actions/setup-node@v2.1.2
         with:
           node-version: '16.x'
+          
+          
+      - name: Setup Github 
+        run: git config --global user.name ${{ MYNAME }} | git config --global user.email ${{ NYEMAIL }}
       # Runs a single command using the runners shell
       - name: install dependency
         run: yarn install
