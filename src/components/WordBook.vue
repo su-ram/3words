@@ -1,6 +1,7 @@
 <template>
   <section>
     <b-container fluid>
+<<<<<<< HEAD
       <b-row>
         <b-col cols="1">
           <div class="wordKey">
@@ -16,6 +17,43 @@
             </b-form-group>
           </div>
         </b-col>
+=======
+        <b-row>
+            
+            <b-col cols="1">
+
+                    <div class="wordKey">
+<b-form-group v-slot="{ ariaDescribedby }">
+<b-form-radio-group
+        id="btn-radios-3"
+        v-model="currentCharacter"
+        :options="keys"
+        :aria-describedby="ariaDescribedby"
+        buttons
+        size="sm"
+      ></b-form-radio-group>
+    </b-form-group>
+                    </div>
+                                 
+            </b-col>
+            
+            <b-col cols="10">
+                All the <span class="start-character">{{this.currentCharacter}}</span>  words....
+            <div > 
+                <b-card-group columns >
+                <Draggable>
+                    <b-card v-for="(word, wordIndex) in this.wordList" :key="wordIndex" :title="word.word" >
+                    <b-card-text v-for="(definition ,index) in word.results.length > 3 ? word.results.slice(0,3) : word.results " :key="index">
+                        <span>
+                            {{index+1}}. {{definition.definition}}, <em>{{definition.partOfSpeech}}</em>
+                        </span>
+                    </b-card-text>
+                    </b-card>
+</Draggable>
+                </b-card-group>
+</div>
+
+>>>>>>> f28db03a46a9a8d04389eee0b09a04fbe9a00c18
 
         <b-col cols="9">
           <div class="mywords">
@@ -69,41 +107,45 @@ import { mapGetters } from "vuex";
 import WordsApi from "../api/words.js";
 
 export default {
-  name: "WordBook",
-  data() {
-    return {
-      currentCharacter: "A",
-      wordList: [],
-      test: "a",
-    };
-  },
-  watch: {
-    currentCharacter() {
-      this.getWordsInfo();
+
+    name: 'WordBook',
+    data() {
+        return{
+            currentCharacter: 'A', 
+            wordList: [], 
+            test: 'a'
+        }
     },
-  },
-  computed: {
-    ...mapGetters({
-      words: "words",
-      keys: "keys",
-      wordsArr: "wordsArr",
-    }),
-  },
-  mounted() {
-    this.getWordsInfo();
-  },
-  methods: {
-    getWordsInfo() {
-      this.wordList = [];
-      this.words[this.currentCharacter].forEach((word) => {
-        WordsApi.getWordInfo(word).then((res) => {
-          this.wordList.push(res.data);
-        });
-      });
-      this.wordList = [...this.wordList, ...this.wordList, ...this.wordList];
+    watch: {
+        currentCharacter() {
+this.wordList = []
+            this.words[this.currentCharacter].forEach((word) => {
+                WordsApi.getWordInfo(word).then((res)=>{
+                    this.wordList.push(res.data)
+                    //this.wordList = [ ...this.wordList, ...this.wordList, ...this.wordList]
+                })
+
+            })
+        }
     },
-  },
-};
+    computed: {
+        ...mapGetters({
+            'words' : 'words', 
+            'keys' : 'keys', 
+            'wordsArr' : 'wordsArr'
+        })
+        
+    }, 
+    methods: {
+        changeKey(event, k){
+            event.preventDefault();
+            console.log('change key')
+            this.currentCharacter = k 
+            
+            
+        }
+    }
+}
 </script>
 <style lang="scss" scoped>
 .section {
@@ -161,13 +203,13 @@ a {
 div .word-search {
   position: sticky;
   top: 0;
+
 }
 .word-search .form-control {
   display: initial !important;
   width: 50%;
   align-self: center;
 }
-// .mywords {
-//   padding: 1rem 1rem;
-// }
+
 </style>
+

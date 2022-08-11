@@ -176,6 +176,7 @@ form {
 #hello {
   letter-spacing: 0.1rem;
 }
+
 .form-control {
   color: #252222;
   background: transparent;
@@ -215,6 +216,26 @@ p {
   opacity: 90%;
   left: 5px;
   top: 3px;
+
+  display: inline-block;
+  font-family: Righteous;
+  color: #e18513;
+  text-shadow: 4px 2px 2px rgb(52, 64, 43);
+}
+.three-words {
+  padding: 3%;
+  font-size: 150%;
+  margin-bottom: 10px;
+  letter-spacing: 0.2rem;
+}
+.warning-text {
+  letter-spacing: 0.1rem;
+  font-size: 70%;
+  display: inline-block;
+  color: rgb(62, 62, 62);
+  opacity: 90%;
+  left: 5px;
+  top: 3px;
 }
 .list-item {
   display: block;
@@ -233,6 +254,7 @@ p {
   background: transparent;
   border: unset;
   color: rgb(62, 62, 62);
+
   letter-spacing: 0.1rem;
 }
 .col {

@@ -75,6 +75,7 @@ html {
 body {
   height: 100%;
   background-color: #dfdbd6 !important;
+  background-color: #dfdbd6 !important;
 }
 
 .count-round {
