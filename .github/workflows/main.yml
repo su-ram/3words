@@ -20,6 +20,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@master
 
+      - name: Setup Node
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: '16.x'
       # Runs a single command using the runners shell
       - name: install dependency
         run: yarn install
@@ -31,7 +35,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
