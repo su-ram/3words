@@ -27,7 +27,7 @@ jobs:
           
           
       - name: Setup Github 
-        run: git config --global user.name ${{ secrets.MYNAME }} | git config --global user.email ${{ secrets.NYEMAIL }}
+        run: git config --global user.name ${{ secrets.MYNAME }} | git config --global user.email ${{ secrets.MYEMAIL }}
       # Runs a single command using the runners shell
       - name: install dependency
         run: yarn install
