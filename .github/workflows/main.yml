@@ -28,10 +28,10 @@ jobs:
         
       # Runs a single command using the runners shell
       - name: install dependency
-        run: yarn install
+        run: npm install
         
       - name: Build Page
-        run: yarn build
+        run: npm run build
         env:
           NODE_ENV: production
 
