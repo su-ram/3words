@@ -21,7 +21,8 @@ docker-build:
     - docker:dind
   script:
     - docker container ls -a
-    - docker build . -t "$dockerhub_userid"/"$dockerhub-repo"
+    - echo "$dockerhub_userid"/"$dockerhub-repo"
+    - docker build -t "$dockerhub_userid"/"$dockerhub-repo" .
     - docker login -u "$dockerhub_userid" -p "$dockerhub-pass"
     - docker push "$dockerhub_user"/"$dockerhub-repo:latest" 
   # Default branch leaves tag empty (= latest tag)
