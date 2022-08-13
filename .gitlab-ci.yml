@@ -9,7 +9,6 @@
 # This template uses one generic job with conditional builds
 # for the default branch and all other (MR) branches.
 stages:
-  
   - package 
 
 
@@ -22,9 +21,9 @@ docker-build:
     - docker:dind
   script:
     - docker container ls -a
-    - docker build . -t $dockerhub_user/$dockerhub-repo
-    - docker login -u $dockerhub_user -p $dockerhub-pass
-    - docker push $dockerhub_user/$dockerhub-repo:latest 
+    - docker build . -t "$dockerhub_userid"/"$dockerhub-repo"
+    - docker login -u "$dockerhub_userid" -p "$dockerhub-pass"
+    - docker push "$dockerhub_user"/"$dockerhub-repo:latest" 
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   
