@@ -52,6 +52,11 @@
                 >There's no such a word like [ {{ this.word }} ], Try again.
               </em>
             </span>
+            <span v-if="this.showFeedback.already" class="warning-text">
+              <em
+                >You've already shown me [ {{ this.word }} ], Show me other one.
+              </em>
+            </span>
           </b-form>
 
           <div class="three-words">
@@ -77,7 +82,7 @@
 <script>
 import TypeIt from "typeit";
 import party from "party-js";
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 import WordsApi from "../api/words.js";
 export default {
   name: "WordInput",
@@ -88,9 +93,12 @@ export default {
       character: this.getRandomCharacter(),
       show: false,
       type: {},
-      showFeedback: { startsWith: false, notFound: false },
+      showFeedback: { startsWith: false, notFound: false, already: false },
       round: 1,
     };
+  },
+  computed: {
+    ...mapGetters({ wordsKey: "wordsByKey" }),
   },
   mounted() {
     this.type = new TypeIt("#hello", {
@@ -110,7 +118,6 @@ export default {
         this.goNextRound();
         this.type.reset().go();
         this.show = false;
-        this.addTheseWords(this.threeWords);
         this.$store.commit("addWordsArr", this.threeWords);
       }
     },
@@ -118,19 +125,24 @@ export default {
       if (this.word === "") {
         this.showFeedback.startsWith = false;
         this.showFeedback.notFound = false;
+        this.showFeedback.already = false;
       }
     },
   },
 
   methods: {
     ...mapMutations({
-      addTheseWords: "addWords",
+      addTheseWords: "addWord",
     }),
     onSubmit(event) {
       event.preventDefault();
+      if (this.word === "") {
+        return;
+      }
       this.validateWord(this.word).then((res) => {
         if (res) {
           this.threeWords.push(this.word);
+          this.addTheseWords(this.word);
           this.word = "";
         }
       });
@@ -148,6 +160,10 @@ export default {
     async validateWord(word) {
       if (!word.toLowerCase().startsWith(this.character.toLowerCase())) {
         this.showFeedback.startsWith = true;
+        return false;
+      }
+      if (this.wordsKey(this.character).includes(word)) {
+        this.showFeedback.already = true;
         return false;
       }
       try {
@@ -216,11 +232,6 @@ p {
   opacity: 90%;
   left: 5px;
   top: 3px;
-
-  display: inline-block;
-  font-family: Righteous;
-  color: #e18513;
-  text-shadow: 4px 2px 2px rgb(52, 64, 43);
 }
 .three-words {
   padding: 3%;
