@@ -34,14 +34,16 @@ const store = new Vuex.Store({
       }, 
       keys(state){
         return state.keys
+      },
+      wordsByKey(state){
+        return (key) => {return state.words[key] ? state.words[key] : []}
       }
     },
     mutations: {
-      addWords (state, newWords) {
-        
-          const keyChr = newWords[0][0].toUpperCase()
+      addWord (state, newWord) {
+          const keyChr = newWord[0].toUpperCase()
           if (state.words[keyChr] === undefined) {state.words[keyChr] = []}
-          const newArr = [...newWords, ...state.words[keyChr]]
+          const newArr = [ newWord, ...state.words[keyChr]]
           state.words[keyChr] = newArr
           state.words = Object.assign({}, state.words)
         
