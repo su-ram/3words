@@ -21,10 +21,10 @@ docker-build:
     - docker:dind
   script:
     - docker container ls -a
-    - echo "$dockerhub_userid"/"$dockerhub-repo"
-    - docker build -t "$dockerhub_userid"/"$dockerhub-repo" .
-    - docker login -u "$dockerhub_userid" -p "$dockerhub-pass"
-    - docker push "$dockerhub_user"/"$dockerhub-repo:latest" 
+    - echo "$dockerhub_userid"/"$dockerhub_repo"
+    - docker build -t "$dockerhub_userid"/"$dockerhub_repo" .
+    - docker login -u "$dockerhub_userid" -p "$dockerhub_pass"
+    - docker push "$dockerhub_user"/"$dockerhub_repo:latest" 
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   
