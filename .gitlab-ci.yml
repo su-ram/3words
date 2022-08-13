@@ -24,7 +24,7 @@ docker-build:
     - echo "$dockerhub_userid"/"$dockerhub_repo"
     - docker build -t "$dockerhub_userid"/"$dockerhub_repo" .
     - docker login -u "$dockerhub_userid" -p "$dockerhub_pass"
-    - docker push "$dockerhub_user"/"$dockerhub_repo:latest" 
+    - docker push "$dockerhub_user"/"$dockerhub_repo":latest 
   # Default branch leaves tag empty (= latest tag)
   # All other branches are tagged with the escaped branch name (commit ref slug)
   
