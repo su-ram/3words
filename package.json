@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@braks/revue-draggable": "^0.4.2",
