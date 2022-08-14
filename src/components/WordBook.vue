@@ -80,7 +80,7 @@ export default {
   watch: {
     currentCharacter() {
       this.wordList = [];
-      this.words[this.currentCharacter].forEach((word) => {
+      this.wordsByKey(this.currentCharacter).forEach((word) => {
         WordsApi.getWordInfo(word).then((res) => {
           this.wordList.push(res.data);
           //this.wordList = [ ...this.wordList, ...this.wordList, ...this.wordList]
@@ -93,6 +93,7 @@ export default {
       words: "words",
       keys: "keys",
       wordsArr: "wordsArr",
+      wordsByKey: "wordsByKey",
     }),
   },
   methods: {
