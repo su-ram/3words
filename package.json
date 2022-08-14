@@ -1,14 +1,11 @@
 {
-  "name": "sss",
+  "name": "3words",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
-    "predeploy": "vue-cli-service build",
-    "deploy": "gh-pages -d dist",
-    "clean": "gh-pages-clean"
   },
   "dependencies": {
     "@braks/revue-draggable": "^0.4.2",

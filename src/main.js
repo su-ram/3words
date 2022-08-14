@@ -53,9 +53,8 @@ const store = new Vuex.Store({
       }
     }
   })
-const myapp = new Vue({
+new Vue({
   render: h => h(App), 
   store: store
-})
+}).$mount('#app')
 
-myapp.$mount('#app')
