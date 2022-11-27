@@ -15,9 +15,9 @@
           <b-tab title="WordBook">
             <WordBook />
           </b-tab>
-          <b-tab title="Instruction"
-            ><p>Page that how to use this service.</p></b-tab
-          >
+          <b-tab title="Ranking">
+            <HelloWorld />
+          </b-tab>
         </b-tabs>
       </div>
     </div>
@@ -27,12 +27,14 @@
 <script>
 import WordInput from "./components/WordInput.vue";
 import WordBook from "./components/WordBook.vue";
+import HelloWorld from "./components/HelloWorld.vue";
 import { loadScript } from "vue-plugin-load-script";
 export default {
   name: "App",
   components: {
     WordInput,
     WordBook,
+    HelloWorld,
   },
   data() {
     return {

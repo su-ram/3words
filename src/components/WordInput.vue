@@ -9,6 +9,14 @@
 
       <div class="terminal">
         <b-container>
+          <b-form>
+            <b-form-input small v-model="username" placeholder="your name.">
+            </b-form-input>
+            {{ points }}P
+            <b-button variant="secondary" @click="savePoints"
+              >점수 저장</b-button
+            >
+          </b-form>
           <button class="count-round" ref="roundBtn">Round</button>
           <transition
             v-on:after-enter="afterEnter"
@@ -83,7 +91,8 @@
 import TypeIt from "typeit";
 import party from "party-js";
 import { mapMutations, mapGetters } from "vuex";
-import WordsApi from "../api/words.js";
+import WordsApi from "@/api/words.js";
+import PointsApi from "@/api/points.js";
 export default {
   name: "WordInput",
   data() {
@@ -95,10 +104,14 @@ export default {
       type: {},
       showFeedback: { startsWith: false, notFound: false, already: false },
       round: 1,
+      username: "",
     };
   },
   computed: {
     ...mapGetters({ wordsKey: "wordsByKey" }),
+    points() {
+      return (this.round - 1) * 5;
+    },
   },
   mounted() {
     this.type = new TypeIt("#hello", {
@@ -177,6 +190,9 @@ export default {
     goNextRound() {
       party.confetti(this.$refs.roundBtn);
       this.round += 1;
+    },
+    savePoints() {
+      PointsApi.saveMyPoint({ username: this.username, points: this.points });
     },
   },
 };
